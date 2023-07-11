@@ -1,25 +1,35 @@
-CREATE OR REPLACE FUNCTION public.sp_update_livros_save(pidlivro integer, ptitulo character varying, pano integer, ppaginas integer, pautor integer, peditora integer, pcondicao integer, psinopse text, pdono_livro text, pcod_estante integer)
- RETURNS TABLE(ridlivro integer)
- LANGUAGE plpgsql
+CREATE OR REPLACE FUNCTION public.sp_update_livros_save(
+    pidlivro integer,
+    ptitulo character varying,
+    pano integer,
+    ppaginas integer,
+    pautor integer,
+    peditora integer,
+    pcondicao integer,
+    psinopse text,
+    pdono_livro text,
+    pcod_estante integer
+)
+RETURNS TABLE (ridlivro integer)
+LANGUAGE plpgsql
 AS $function$
-DECLARE vidlivro INT;
+DECLARE
+    vidlivro INT;
+BEGIN
+    SELECT idlivro INTO vidlivro FROM livros WHERE idlivro = pidlivro;
 
-BEGIN 
-	SELECT idlivro INTO vidlivro FROM livros WHERE idlivro = pidlivro;
-	select MAX(cod_estante) +1 as pcod_estante from livros;
-    
-	UPDATE livros SET
-	titulo = ptitulo,
-	ano = pano,
-	paginas = ppaginas,
-	autor_idautor = pautor,
-	editora_ideditora = peditora,
-	condicao = pcondicao,
-	sinopse = psinopse,
-	dono_livro = pdono_livro,
-	cod_estante = pcod_estante
-	WHERE idlivro = vidlivro;
-	
-	RETURN QUERY SELECT idlivro FROM livros WHERE idlivro = pidlivro;	
-END; $function$
-;
+  UPDATE livros SET
+    titulo = ptitulo,
+    ano = pano,
+    paginas = ppaginas,
+    autor_idautor = pautor,
+    editora_ideditora = peditora,
+    condicao = pcondicao,
+    sinopse = psinopse,
+    dono_livro = pdono_livro,
+    cod_estante = pcod_estante
+WHERE idlivro = vidlivro;
+
+    RETURN QUERY SELECT idlivro FROM livros WHERE idlivro = pidlivro;
+END;
+$function$;
