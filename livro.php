@@ -1,6 +1,5 @@
 // Update no livro
-public function update(){
-	echo "passei aq";
+public function save(){
     $sql = new Sql();
 
     $maxCodEstante = $sql->select("SELECT MAX(cod_estante) AS max_cod_estante FROM livros");
